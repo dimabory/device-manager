@@ -3,15 +3,14 @@ node_js: "node"
 env:
   global:
     - POSTGRES_DB=device
-    - POSTGRES_USER=device
-    - POSTGRES_PASSWORD=password
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=
     - PUBLIC_KEY=test-public-key
-    - DATABASE_URL=postgresql://device:password@localhost:5432/device
+    - DATABASE_URL=postgresql://postgres@localhost:5432/device
 services:
   - postgresql
 before_install:
   - psql -c "CREATE DATABASE device;" -U postgres
-  - psql -c "CREATE USER device WITH PASSWORD 'password';" -U postgres
 install:
   - npm install npm@latest -g
   - npm install
