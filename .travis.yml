@@ -16,7 +16,7 @@ install:
   - npm install npm@latest -g
   - npm install
 script:
-  - npm npm run test:coverage
+  - npm run test:coverage
 notifications:
   email:
     on_success: never
