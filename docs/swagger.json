@@ -1,0 +1,784 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "device manager"
+  },
+  "host": "",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "device"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/v1/device-types": {
+      "get": {
+        "tags": [
+          "device-types"
+        ],
+        "summary": "get all device-types",
+        "description": "",
+        "operationId": "getDeviceTypes",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "description": "number of items to skip before starting to collect the result set"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "description": "number of items to return"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Device"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "device-types"
+        ],
+        "summary": "create new device-type",
+        "description": "",
+        "operationId": "addDeviceType",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceTypeNew"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "201": {
+            "description": "created",
+            "schema": {
+              "$ref": "#/definitions/DeviceType"
+            }
+          }
+        }
+      }
+    },
+    "/v1/device-types/{id}": {
+      "get": {
+        "tags": [
+          "device-types"
+        ],
+        "summary": "get device-type by id",
+        "description": "returns a single device-type",
+        "operationId": "getDeviceTypeById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of device-type to return",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/DeviceType"
+            }
+          },
+          "400": {
+            "description": "invalid id supplied"
+          },
+          "404": {
+            "description": "device-type not found"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "device-types"
+        ],
+        "summary": "update an existing device-type",
+        "description": "",
+        "operationId": "updateDeviceType",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id of device-type to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceTypeUpdate"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "device-type object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceTypeUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "device-type updated",
+            "schema": {
+              "$ref": "#/definitions/DeviceType"
+            }
+          },
+          "400": {
+            "description": "invalid id supplied"
+          },
+          "404": {
+            "description": "device-type not found"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "device-types"
+        ],
+        "summary": "delete a device-type",
+        "description": "",
+        "operationId": "deleteDeviceType",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "device-type id to delete",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "device-type not found"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      }
+    },
+    "/v1/device": {
+      "get": {
+        "tags": [
+          "device"
+        ],
+        "summary": "get all device",
+        "description": "",
+        "operationId": "getDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "description": "number of items to skip before starting to collect the result set"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "description": "number of items to return"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Device"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "device"
+        ],
+        "summary": "create new device",
+        "description": "",
+        "operationId": "addDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceNew"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "invalid input"
+          },
+          "401": {
+            "description": "unauthorized"
+          },
+          "201": {
+            "description": "created",
+            "schema": {
+              "$ref": "#/definitions/Device"
+            }
+          }
+        }
+      }
+    },
+    "/v1/device/{id}": {
+      "get": {
+        "tags": [
+          "device"
+        ],
+        "summary": "get device by id",
+        "description": "returns a single device",
+        "operationId": "getDeviceById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of device to return",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Device"
+            }
+          },
+          "400": {
+            "description": "invalid id supplied"
+          },
+          "404": {
+            "description": "device not found"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "device"
+        ],
+        "summary": "update an existing device",
+        "description": "",
+        "operationId": "updateDevice",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "id of device to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceUpdate"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "device object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "device updated",
+            "schema": {
+              "$ref": "#/definitions/Device"
+            }
+          },
+          "400": {
+            "description": "invalid id supplied"
+          },
+          "404": {
+            "description": "device not found"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "device"
+        ],
+        "summary": "delete an device",
+        "description": "",
+        "operationId": "deleteDevice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "type": "string",
+            "description": "Bearer [user-token]",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "device id to delete",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "400": {
+            "description": "invalid input"
+          },
+          "404": {
+            "description": "device not found"
+          },
+          "401": {
+            "description": "unauthorized"
+          }
+        }
+      }
+    },
+    "/internal/device": {
+      "get": {
+        "tags": [
+          "internal"
+        ],
+        "summary": "get device by id",
+        "description": "returns a single device",
+        "operationId": "getDeviceById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "serial_number",
+            "in": "query",
+            "description": "serial_number of device to return",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "device_type_id",
+            "in": "query",
+            "description": "device_type_id of device to return",
+            "required": false,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Device"
+            }
+          },
+          "400": {
+            "description": "invalid id supplied"
+          },
+          "404": {
+            "description": "device not found"
+          }
+        }
+      }
+    },
+    "/internal/device-types/{id}": {
+      "get": {
+        "tags": [
+          "internal"
+        ],
+        "summary": "get device-type by id",
+        "description": "returns a single device-type",
+        "operationId": "getDeviceTypeByIdInternal",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of device-type to return",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/DeviceType"
+            }
+          },
+          "400": {
+            "description": "invalid id supplied"
+          },
+          "404": {
+            "description": "device-type not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Device": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "a5229136-9300-41fb-a92e-3a6b231d82a0"
+        },
+        "name": {
+          "type": "string",
+          "example": "sample device"
+        },
+        "serial_number": {
+          "type": "string",
+          "example": "sample-serial-number-1"
+        },
+        "user_id": {
+          "type": "string",
+          "example": "c030921a-cd30-4e4a-b5f3-ed5591b7204a"
+        },
+        "device_type_id": {
+          "type": "string",
+          "example": "98722266-e269-4187-a87c-e3a6a1ce3fcd"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2018-09-04T11:41:32.160Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2018-09-04T11:41:32.160Z"
+        }
+      }
+    },
+    "DeviceNew": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "sample device"
+        },
+        "serial_number": {
+          "type": "string",
+          "example": "sample-serial-number-1"
+        },
+        "device_type_id": {
+          "type": "string",
+          "example": "98722266-e269-4187-a87c-e3a6a1ce3fcd"
+        }
+      }
+    },
+    "DeviceUpdate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "sample device update"
+        }
+      }
+    },
+    "Resource": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "topic": {
+          "type": "string",
+          "example": "sample/pub"
+        },
+        "method": {
+          "type": "string",
+          "example": "pub"
+        }
+      }
+    },
+    "DeviceType": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "a5229136-9300-41fb-a92e-3a6b231d82a0"
+        },
+        "name": {
+          "type": "string",
+          "example": "sample device-type"
+        },
+        "description": {
+          "type": "string",
+          "example": "sample device-type description"
+        },
+        "user_id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "1994f0c9-a666-4c2a-bec2-eaf357d1bb88"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Resource"
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2018-09-04T11:41:32.160Z"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2018-09-04T11:41:32.160Z"
+        }
+      }
+    },
+    "DeviceTypeNew": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "sample device-type"
+        },
+        "description": {
+          "type": "string",
+          "example": "sample device-type description"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Resource"
+          }
+        }
+      }
+    },
+    "DeviceTypeUpdate": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "sample device-type update"
+        },
+        "description": {
+          "type": "string",
+          "example": "sample device-type description update"
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Resource"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "documentation",
+    "url": ""
+  }
+}

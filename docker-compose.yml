@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  device-postgres:
+    image: postgres
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=device
+      - POSTGRES_USER=device
+      - POSTGRES_PASSWORD=password
